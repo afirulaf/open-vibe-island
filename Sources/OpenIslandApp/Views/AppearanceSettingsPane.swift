@@ -126,7 +126,76 @@ struct AppearanceSettingsPane: View {
             previewSection
             rightSlotSection
             centerLabelSection
+            idleVisibilitySection
         }
+    }
+
+    // MARK: - 03 · Idle visibility
+
+    @ViewBuilder
+    private var idleVisibilitySection: some View {
+        sectionHeader(
+            title: lang.t("settings.appearance.idleVisibility.title"),
+            note: lang.t("settings.appearance.idleVisibility.note")
+        )
+
+        HStack(spacing: 12) {
+            idleVisibilityCard(hidden: false)
+            idleVisibilityCard(hidden: true)
+        }
+    }
+
+    private func idleVisibilityCard(hidden: Bool) -> some View {
+        let selected = editingPreferences.hideWhenIdle == hidden
+        let title = hidden
+            ? lang.t("settings.appearance.idleVisibility.hidden")
+            : lang.t("settings.appearance.idleVisibility.visible")
+        return Button {
+            model.updateAppearancePreferences(for: editingProfile) { $0.hideWhenIdle = hidden }
+        } label: {
+            VStack(spacing: 10) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(Color.white.opacity(0.04))
+                    if hidden {
+                        V6ClosedPillShape()
+                            .fill(V6Palette.ink)
+                            .frame(width: 60, height: 18)
+                    } else {
+                        HStack(spacing: 0) {
+                            Capsule()
+                                .fill(V6Palette.paper.opacity(0.25))
+                                .frame(width: 18, height: 18)
+                            V6ClosedPillShape()
+                                .fill(V6Palette.ink)
+                                .frame(width: 60, height: 18)
+                            Capsule()
+                                .fill(V6Palette.paper.opacity(0.25))
+                                .frame(width: 18, height: 18)
+                        }
+                    }
+                }
+                .frame(height: 56)
+
+                Text(title)
+                    .font(.system(size: 11.5, weight: .medium))
+                    .foregroundStyle(Color.white.opacity(0.85))
+            }
+            .padding(12)
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Color.white.opacity(selected ? 0.07 : 0.02))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .stroke(
+                        selected ? V6Palette.paper.opacity(0.9) : Color.white.opacity(0.08),
+                        lineWidth: selected ? 1.5 : 1
+                    )
+            )
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Session list part

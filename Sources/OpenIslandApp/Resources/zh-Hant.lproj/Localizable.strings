@@ -100,6 +100,10 @@
 "settings.appearance.staleThreshold.tenMinutes" = "10 分鐘";
 "settings.appearance.staleThreshold.twentyMinutes" = "20 分鐘";
 "settings.appearance.staleThreshold.never" = "永不";
+"settings.appearance.idleVisibility.title" = "07 · 閒置可見性";
+"settings.appearance.idleVisibility.note" = "控制在沒有代理活動時，島嶼是否保持可見。";
+"settings.appearance.idleVisibility.visible" = "顯示";
+"settings.appearance.idleVisibility.hidden" = "隱藏";
 "settings.appearance.preview.permissionNeeded" = "需要授權";
 "settings.appearance.preview.agentEditing" = "Claude · 正在編輯";
 "settings.appearance.preview.approveShellCommand" = "核准 Shell 命令";

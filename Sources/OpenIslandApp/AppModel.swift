@@ -377,6 +377,11 @@ final class AppModel {
         set { updateAppearancePreferences(for: activeAppearanceProfile) { $0.completedStaleThreshold = newValue } }
     }
 
+    var islandHideWhenIdle: Bool {
+        get { appearancePreferences(for: activeAppearanceProfile).hideWhenIdle }
+        set { updateAppearancePreferences(for: activeAppearanceProfile) { $0.hideWhenIdle = newValue } }
+    }
+
     @ObservationIgnored
     var openSettingsWindow: (() -> Void)?
 
@@ -426,6 +431,7 @@ final class AppModel {
         defaults.set(preferences.sessionGroup.rawValue, forKey: Self.appearanceDefaultsKey(profile, "sessionGroup"))
         defaults.set(preferences.sessionSort.rawValue, forKey: Self.appearanceDefaultsKey(profile, "sessionSort"))
         defaults.set(preferences.completedStaleThreshold.rawValue, forKey: Self.appearanceDefaultsKey(profile, "completedStaleThreshold"))
+        defaults.set(preferences.hideWhenIdle, forKey: Self.appearanceDefaultsKey(profile, "hideWhenIdle"))
     }
 
     // MARK: - Watch Notification
@@ -572,7 +578,8 @@ final class AppModel {
                 rawValue: defaults.string(forKey: appearanceDefaultsKey(profile, "completedStaleThreshold"))
                     ?? defaults.string(forKey: legacyCompletedStaleThresholdDefaultsKey)
                     ?? ""
-            ) ?? .fiveMinutes
+            ) ?? .fiveMinutes,
+            hideWhenIdle: defaults.bool(forKey: appearanceDefaultsKey(profile, "hideWhenIdle"))
         )
     }
 

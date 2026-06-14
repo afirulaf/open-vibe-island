@@ -222,6 +222,10 @@ struct V6ClosedPill: View {
     /// width that fits just the glyph.
     var minWidth: CGFloat = 70
 
+    /// MacBook mode only — collapse pill to notch width when idle so the
+    /// extensions vanish behind the physical cutout.
+    var hideWhenIdle: Bool = false
+
     var body: some View {
         switch layout {
         case .external: externalBody
@@ -287,7 +291,8 @@ struct V6ClosedPill: View {
     // MARK: MacBook (outer width locked)
 
     private var macbookBody: some View {
-        let halfReserve: CGFloat = 44
+        let collapsed = hideWhenIdle && mode == .idle
+        let halfReserve: CGFloat = collapsed ? 0 : 44
         let outer = halfReserve + physicalNotchWidth + halfReserve
 
         return ZStack {
@@ -306,7 +311,9 @@ struct V6ClosedPill: View {
             }
             .padding(.horizontal, pad)
         }
+        .opacity(collapsed ? 0 : 1)
         .frame(width: outer, height: height)
+        .animation(.timingCurve(0.4, 0, 0.2, 1, duration: 0.45), value: collapsed)
     }
 }
 
